@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" href="./index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reprodutor de Musicas 💖</title>
+</head>
+<body>
+    <div class="janela">
+        <div class="janela-botao">
+            <div class="faixa"> 
+                <label for="arquivo">Abrir Musicas</label>
+                <input type="file" id="arquivo" multiple accept="audio/mpeg, audio/wav">
+            </div>
+
+        </div>
+        <div class="janela-faixas">
+
+            
+
+        </div>
+
+        <div class="janela-reprodutor">
+            <audio controls></audio>
+        </div>
+        
+    </div>
+
+    <script>
+        const audio = document.querySelector("audio");
+        const entrada = document.querySelector("input");
+        const faixas = document.querySelector("div.janela-faixas");
+        const arquivos = new Array();
+
+        function Apresentar() {
+            faixas.innerHTML = "";
+            arquivos.forEach(function(arquivo, indice) {
+                const musica = document.createElement("div");
+                musica.setAttribute("class", "faixa");
+                musica.setAttribute("onclick", `Tocar(${ indice })`);
+                musica.innerHTML = arquivo.nome;
+                faixas.appendChild(musica)
+            })
+        }
+
+        function Tocar(indice){
+            audio.setAttribute("src", arquivos[indice].endereco);
+            audio.play();
+        }
+
+        entrada.addEventListener("change", function(){
+            for (const dado of entrada.files) {
+                const nome = dado.name;
+                const endereco = URL.createObjectURL(dado);
+                arquivos.push({ nome, endereco });
+            }
+            Apresentar()
+
+            entrada.value = "";
+        })
+
+    </script>
+</body>
+</html>
